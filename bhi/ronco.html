@@ -680,17 +680,18 @@
 
             // Crea il testo del timer (inizialmente a 00:00)
             scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
-
+            /*
             // Crea il pulsante per salvare il tempo
-            var salvaButton = this.add.text(10, 10, 'Salva Tempo', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+            var salvaButton = this.add.text(10, 10, 'Salva Tempo', { fontSize: '32px', fill: '#0a0dc9'})
                 .setInteractive()
                 .on('pointerdown', () => salvaTempo())
                 .on('pointerover', () => salvaButton.setStyle({ fill: '#45a049' }))
                 .on('pointerout', () => salvaButton.setStyle({ fill: '#4CAF50' }));
-
+            */
+           var name
             // Crea un campo di testo per inserire il nome del giocatore
-            this.add.text(600, 60, 'Nome:', { fontSize: '24px', fill: '#fff' });
-            this.nomeGiocatoreText = this.add.text(680, 60, '', { fontSize: '24px', fill: '#fff' });
+            this.name = this.add.text(600, 45, 'Nome:', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 1  });
+            this.nomeGiocatoreText = this.add.text(680, 45, '', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 1 });
             this.inputNome = '';
 
             // Cattura l'input della tastiera per inserire il nome
@@ -1126,7 +1127,7 @@
                         this.scene.start('Menu');
                     }, this);
 
-                    salvaButton = this.add.text(750, 530, 'SALVA NELLA CLASSIFICA', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+                    salvaButton = this.add.text(750, 530, 'SALVA NELLA CLASSIFICA', { fontSize: '32px', fill: '#0a0dc9' })
                         .setInteractive()
                         .on('pointerdown', () => salvaTempo())
                         .on('pointerover', () => salvaButton.setStyle({ fill: '#93C47D' }))
@@ -1218,6 +1219,8 @@
             livelliText.setDepth(1);
 
             this.timerText.setPosition(this.cameras.main.scrollX + 650, this.cameras.main.scrollY + 30);
+            this.name.setPosition(this.cameras.main.scrollX + 600, this.cameras.main.scrollY + 45);
+            this.nomeGiocatoreText.setPosition(this.cameras.main.scrollX + 700, this.cameras.main.scrollY + 45);
 
             //gameOverText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 235);
 
@@ -1381,4 +1384,4 @@
     </script>
 </body>
 
-</html>
+</html
