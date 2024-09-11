@@ -918,8 +918,7 @@
                     creaGG.call(this);
                     scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
-                        //var tempo_inizio = timer;
-                        /*
+
                         // zombo
                         monsters = this.physics.add.sprite(900, 450, 'zombo');
                         mostri.add(monsters);
@@ -948,7 +947,6 @@
                         monsters.setCollideWorldBounds(true);
                         monsters.type = "zombo";
                         monsters.setSize(170, 190);
-                        */
 
                     });
                 }
@@ -974,7 +972,7 @@
                     livelliText.setText('Livello 3');
                     scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
-                        /*
+
                         // zombo
                         monsters = this.physics.add.sprite(900, 450, 'zombo');
                         mostri.add(monsters);
@@ -1003,7 +1001,7 @@
                         monsters.setCollideWorldBounds(true);
                         monsters.type = "zombo";
                         monsters.setSize(170, 190);
-                        */
+
 
                     });
                 }
@@ -1028,10 +1026,10 @@
                     player.setPosition(400, 450);
                     player.setDepth(1);
                     creaGG.call(this);
+                    livelliText.setText('Livello 4');
                     scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
-                        livelliText.setText('Livello 4');
-                        /*
+
                         // zombo
                         monsters = this.physics.add.sprite(900, 450, 'zombo');
                         mostri.add(monsters);
@@ -1060,7 +1058,6 @@
                         monsters.setCollideWorldBounds(true);
                         monsters.type = "zombo";
                         monsters.setSize(170, 190);
-                        */
 
                     });
                 }
@@ -1380,7 +1377,6 @@
                 congratulazione.setDepth(1);
             }
         }
-
 
     </script>
 </body>
