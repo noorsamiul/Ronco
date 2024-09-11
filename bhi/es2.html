@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Ronco</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script type="text/javascript">
+        var scena1 = {
+            preload: preload,
+            create: create,
+            update: update
+        }
+
+        var inizio = {
+            preload: preloadInizio,
+            create: createInizio,
+            update: updateInizio
+        }
+        var Menu = {
+            preload: preloadMenu,
+            create: createMenu,
+            update: updateMenu
+        }
+        var MenuOpzioni = {
+            preload: preloadMenuOpzioni,
+            create: createMenuOpzioni,
+            update: updateMenuOpzioni
+        }
+        var Classificazione = {
+            preload: preloadClassificazione,
+            create: createClassificazione,
+            update: updateClassificazione
+        }
+
+        var config = {
+            type: Phaser.AUTO,
+            width: 2300,
+            height: 800,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: true
+                }
+            }
+        };
+        //dichiarazione di ogni tipo di elementi
+        var player;
+        var platforms;
+        var fine_gioco;
+        // foresta per i livelli
+        var foresta1;
+        var foresta2;
+        var foresta3;
+        var foresta4;
+        var foresta5;
+        var tacche;
+        var cursors;
+        var punti = 0;
+        var vita = 10;
+        var stars;
+        var puntiText;
+        var vitaText;
+        var scene;
+        var gg;
+        var ggText;
+        var gg_punti = 0;
+
+        var tocca_MostriText;
+        var mostriUccisi = 0;
+
+
+        //immagine dei livelli
+        var livelliimg;
+
+        //livelli Text
+        var livelliText;
+
+        // livelli inizia e fine
+        var level1Started = false;
+        var level1Finished = false;
+
+        var level2Started = false;
+        var level2Finished = false;
+
+        var level3Started = false;
+        var level3Finished = false;
+
+        var level4Started = false;
+        var level4Finished = false;
+
+        var level5Started = false;
+        var level5Finished = false;
+
+        var congratulazione = false;
+
+        //var finegioco = true;
+
+        //primo livello zombo * 5
+        var mostri;
+        var monsters;
+        var monsters0;
+        var monsters1;
+        var monsters2;
+        var enemy;
+        var vita_zembo;
+
+        var gameOver = false;
+        var toccaZombie = false;
+        var tastoq;
+        var tastow;
+        var tastoa;
+        var tastoh;
+        var tastoentra;
+        var playButtonMenu;
+        var playButton;
+        var attacca = false;
+
+        //var timerText;
+        //var tempoInizio = 0;
+        var timerAttivo = false;
+
+        var vitaBoss;
+        var contatoreBarra;
+        var barra;
+        var plauButtonMe;
+
+        var backgraund;
+
+        //var timerEvent;
+        //var pauseButton = false;
+        //var resumeButton = false;
+
+        //var inputText = '';
+        //var nameText;
+        //var startButton;
+
+
+        // menu variabili
+        var menu;
+
+        var classifica = [];
+        var formattedTime = '';
+
+        var game = new Phaser.Game(config);
+        game.scene.add("livello1", scena1);
+        game.scene.add("inizio", inizio);
+        game.scene.add("Menu", Menu);
+        game.scene.add("MenuOpzioni", MenuOpzioni);
+        game.scene.add("Classificazione", Classificazione);
+        game.scene.start("Menu");
+        var Play;
+
+        // menu scene
+
+        function preloadMenu() {
+            this.load.image('menu', 'assets/menu.png');
+            this.load.image('ronco_player', 'assets/ronco_player.png');
+        }
+
+        function createMenu() {
+            menu = this.add.image(800, 380, 'menu');
+            menu.setScale(3);
+
+            ronco_player = this.add.image(1150, 220, 'ronco_player');
+            ronco_player.setScale(3);
+            ronco_player.setDepth(1);
+
+            const buttonGraphics = this.add.graphics();
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            var playButton = this.add.text(730, 379, 'PLAY', {
+                font: "60px Georgia",
+                fill: '#145e0d',
+            });
+
+            playButton.on('pointerover', () => {
+                playButton.setBackgroundColor('#93C47D');
+            });
+
+            playButton.on('pointerout', () => {
+                playButton.setBackgroundColor('#6AA84F');
+            });
+
+            playButton.setInteractive();
+
+            playButton.on('pointerdown', () => {
+                this.scene.start('inizio');
+            }, this);
+
+
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            var playButtonOpzioni = this.add.text(695, 465, 'OPZIONI', {
+                font: "50px Georgia",
+                fill: '#145e0d'
+            });
+            playButtonOpzioni.setInteractive();
+
+            playButtonOpzioni.on('pointerover', () => {
+                playButtonOpzioni.setBackgroundColor('#93C47D');
+            });
+
+            playButtonOpzioni.on('pointerout', () => {
+                playButtonOpzioni.setBackgroundColor('#6AA84F');
+            });
+
+
+            playButtonOpzioni.on('pointerdown', () => {
+                this.scene.start('MenuOpzioni');
+            }, this);
+
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            var playButtonClassisicazione = this.add.text(580, 547, 'CLASSIFICAZIONE', {
+                font: "50px Georgia",
+                fill: '#145e0d'
+            });
+            playButtonClassisicazione.setInteractive();
+
+            playButtonClassisicazione.on('pointerover', () => {
+                playButtonClassisicazione.setBackgroundColor('#93C47D');
+            });
+
+            playButtonClassisicazione.on('pointerout', () => {
+                playButtonClassisicazione.setBackgroundColor('#6AA84F');
+            });
+
+            playButtonClassisicazione.on('pointerdown', () => {
+                this.scene.start('Classificazione');
+            }, this);
+
+        }
+
+
+        function updateMenu() {
+
+        }
+
+        // menu opzioni
+
+        function preloadMenuOpzioni() {
+            this.load.image('menu', 'assets/menu.png');
+        }
+
+        function createMenuOpzioni() {
+
+            menu = this.add.image(800, 380, 'menu');
+            menu.setScale(3);
+
+            const buttonGraphics = this.add.graphics();
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            var playButtonDietro = this.add.text(1205, 650, 'MENU', {
+                font: "50px Georgia",
+                fill: '#145e0d'
+            });
+
+            playButtonDietro.setInteractive();
+
+            playButtonDietro.on('pointerover', () => {
+                playButtonDietro.setBackgroundColor('#93C47D');
+            });
+
+            playButtonDietro.on('pointerout', () => {
+                playButtonDietro.setBackgroundColor('#6AA84F');
+            });
+
+            playButtonDietro.on('pointerdown', () => {
+                this.scene.start('Menu');
+            }, this);
+        }
+
+        function updateMenuOpzioni() {
+
+        }
+
+
+        // CLASSIFICA DEL GIOCO
+
+        function preloadClassificazione() {
+            this.load.image('menu', 'assets/menu.png');
+        }
+
+
+        function createClassificazione() {
+            menu = this.add.image(800, 380, 'menu');
+            menu.setScale(3);
+
+            const buttonGraphics = this.add.graphics();
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            var playButtonDietroClass = this.add.text(1205, 650, 'MENU', {
+                font: "50px Georgia",
+                fill: '#3cdbde',
+                out: 'button-active',
+                over: 'button-over',
+                down: 'button-down'
+            });
+
+            playButtonDietroClass.setInteractive();
+
+            playButtonDietroClass.on('pointerdown', () => {
+                this.scene.start('Menu');
+            }, this);
+
+
+            // Mostra i titoli della classifica
+            this.add.text(200, 120, 'Posizione', { fontSize: '30px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+            this.add.text(500, 120, 'Nome', { fontSize: '30px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+            this.add.text(700, 120, 'Tempo', { fontSize: '30px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+            this.add.text(900, 120, 'Punti', { fontSize: '30px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+            this.add.text(1100, 120, 'Mostri Uccidi', { fontSize: '30px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+
+            // Ordina la classifica per tempo (se necessario)
+            classifica.sort((a, b) => a.tempo.localeCompare(b.tempo));
+
+            // Mostra i risultati della classifica
+            for (var i = 0; i < classifica.length; i++) {
+                var record = classifica[i];
+                this.add.text(200, 200 + i * 50, (i + 1).toString(), { fontSize: '24px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+                this.add.text(500, 200 + i * 50, record.nome, { fontSize: '24px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+                this.add.text(700, 200 + i * 50, record.tempo, { fontSize: '24px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+                this.add.text(900, 200 + i * 50, record.punti, { fontSize: '24px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+                this.add.text(1100, 200 + i * 50, record.mostriUccisi, { fontSize: '24px', fill: '#000', stroke: '#fff', strokeThickness: 2 });
+
+            }
+            /*
+            // Aggiungi un pulsante per tornare alla scena del timer
+            var restartButton = this.add.text(10, 10, 'Ricomincia', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+                .setInteractive()
+                .on('pointerdown', () => this.scene.start('livello1'))
+                .on('pointerover', () => restartButton.setStyle({ fill: '#45a049' }))
+                .on('pointerout', () => restartButton.setStyle({ fill: '#4CAF50' }));
+
+
+            */
+
+
+        }
+
+        function updateClassificazione() {
+        }
+
+
+
+
+
+        function preloadInizio() {
+            this.load.image('menu', 'assets/menu.png');
+        }
+
+        function createInizio() {
+
+            menu = this.add.image(800, 380, 'menu');
+            menu.setScale(3);
+
+            // bottone per speed run
+            const buttonGraphics = this.add.graphics();
+            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+            buttonGraphics.strokeRoundedRect(220, 200 - 10, 450, 70, 20);
+            buttonGraphics.fillRoundedRect(220, 200 - 10, 450, 70, 20);
+            var playButtonSpeedrun = this.add.text(500, 200, 'PLAY SPEED RUN', {
+                font: "50px Georgia",
+                fill: '#145e0d'
+            });
+
+            playButtonSpeedrun.setInteractive();
+
+            playButtonSpeedrun.on('pointerdown', () => {
+                this.scene.start('livello1');
+            }, this);
+
+
+            //dietro
+
+            var playButtonMU = this.add.text(715, 500, 'MENU', {
+                font: "50px Georgia",
+                fill: '#145e0d'
+            });
+
+            playButtonMU.setInteractive();
+
+            playButtonMU.on('pointerdown', () => {
+                this.scene.start('Menu');
+            }, this);
+
+        }
+
+        function updateInizio() {
+
+        }
+
+        // scene 1
+        function preload() {
+            this.load.image('ground', 'assets/platform.png');
+            this.load.image('foresta1', 'assets/foresta1.png');
+            this.load.image('foresta2', 'assets/foresta2.png');
+            this.load.image('foresta3', 'assets/foresta3.png');
+            this.load.image('foresta4', 'assets/foresta4.png');
+            this.load.image('foresta5', 'assets/foresta5.png');
+            this.load.image('star', 'assets/star.png');
+            this.load.image('gg', 'assets/gg.png');
+            this.load.audio('backgraund', 'assets/backgraund.mp3');
+            this.load.spritesheet('zombo', 'assets/Zombo.png', { frameWidth: 192, frameHeight: 192 });
+            // zembo 
+            //attacco
+            this.load.spritesheet('zembo', 'assets/zembo.png', { frameWidth: 192, frameHeight: 192 });
+            //muore
+
+
+            // BARRA DEL BOSS
+            this.load.image('vita_boss1', 'assets/vita_Boss/vita_boss1.png');
+            this.load.image('vita_boss2', 'assets/vita_Boss/vita_boss2.png');
+            this.load.image('vita_boss3', 'assets/vita_Boss/vita_boss3.png');
+            this.load.image('vita_boss4', 'assets/vita_Boss/vita_boss4.png');
+            this.load.image('vita_boss5', 'assets/vita_Boss/vita_boss5.png');
+            this.load.image('vita_boss6', 'assets/vita_Boss/vita_boss6.png');
+            this.load.image('vita_boss7', 'assets/vita_Boss/vita_boss7.png');
+            this.load.image('vita_boss8', 'assets/vita_Boss/vita_boss8.png');
+            this.load.image('vita_boss9', 'assets/vita_Boss/vita_boss9.png');
+            this.load.image('vita_boss10', 'assets/vita_Boss/vita_boss10.png');
+            this.load.image('vita_boss11', 'assets/vita_Boss/vita_boss11.png');
+            this.load.image('vita_boss12', 'assets/vita_Boss/vita_boss12.png');
+            this.load.image('vita_boss13', 'assets/vita_Boss/vita_boss13.png');
+
+            // ronca
+            this.load.spritesheet('muore', 'assets/ronca/muore.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('salto', 'assets/ronca/salto.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('corre_polvere', 'assets/ronca/corre_polvere.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('corre', 'assets/ronca/corre.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('attacco_1', 'assets/ronca/attacco_1.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('attacco_2', 'assets/ronca/attacco_2.png', { frameWidth: 483, frameHeight: 308 });
+            this.load.spritesheet('danno', 'assets/ronca/danno.png', { frameWidth: 448, frameHeight: 308 });
+            this.load.spritesheet('fermo', 'assets/ronca/fermo.png', { frameWidth: 448, frameHeight: 308 });
+        }
+
+        function create() {
+            scene = this;
+            player = null;
+            fine_gioco = null;
+            //platforms = null;
+
+            // foresta per i livelli
+            foresta1 = null;
+            foresta2 = null;
+            foresta3 = null;
+            foresta4 = null;
+            foresta5 = null;
+
+            cursors = null;
+            punti = 0;
+            vita = 10;
+            stars = null;
+            puntiText = null;
+            vitaText = null;
+            gg = null;
+            ggText = null;
+            gg_punti = 0;
+
+            tocca_MostriText = null;
+            mostriUccisi = 0;
+
+
+            //immagine dei livelli
+            livelliimg = null;
+
+            //livelli Text
+            livelliText = null;
+
+            // livelli inizia e fine
+            level1Started = false;
+            level1Finished = false;
+
+            level2Started = false;
+            level2Finished = false;
+
+            level3Started = false;
+            level3Finished = false;
+
+            level4Started = false;
+            level4Finished = false;
+
+            level5Started = false;
+            level5Finished = false;
+
+            congratulazione = false;
+
+            //finegioco = true;
+
+            //primo livello zombo * 5
+            mostri = null;
+            monsters = null;
+            monsters0 = null;
+            monsters1 = null;
+            monsters2 = null;
+            enemy = null;
+
+            gameOver = false;
+
+            toccaZombie = false;
+            tastoq = null;
+            tastow = null;
+            tastoa = null;
+            tastoh = null;
+            tastoentra = null;
+            playButtonMenu = null;
+            playButton = null;
+            attacca = false;
+
+
+            //tempoTrascorso = null;
+            //timerText = null;
+            //tempoInizio = null;
+            backgraund = null;
+
+            //timerEvent = null;
+            //resumeButton = null;
+            plauButtonMe = null;
+
+
+
+            //piattaforma
+            platforms = this.physics.add.staticGroup();
+            platforms.create(400, 700, 'ground').setScale(2).refreshBody();
+            platforms.create(1200, 700, 'ground').setScale(2).refreshBody();
+            platforms.create(2000, 700, 'ground').setScale(2).refreshBody();
+
+            // Configura i cursori per il controllo del giocatore
+            cursors = this.input.keyboard.createCursorKeys();
+
+            //alberi
+            livelliimg = ['foresta1', 'foresta2', 'foresta3', 'foresta4', 'foresta5'];
+
+
+            foresta1 = this.add.image(1100, 350, 'foresta1');
+            foresta1.setScale(4);
+
+            // attacco
+            tastoq = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+            tastow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            tastoa = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            tastoentra = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTRA);
+
+            // rinizia il gioco
+            tastoh = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H, scene.startGame, this);
+
+            // dichiarazioe personaggi del gioco
+
+            player = this.physics.add.sprite(100, 450, 'ronca');
+            player.setScale(1);
+            player.setBounce(0.2);
+            player.setCollideWorldBounds(true);
+            player.setSize(200, 250);
+            player.setOffset(1000, -90);
+
+
+            // camera
+            this.cameras.main.setBounds(0, 0, 3000, 800);
+
+            this.physics.world.setBounds(0, 0, 2260, 800);
+
+            // Configura la telecamera per seguire il giocatore
+            this.cameras.main.startFollow(player, true, 1, 0);
+
+            //mostri
+            mostri = this.physics.add.group();
+
+            monsters = this.physics.add.sprite(900, 450, 'zombo');
+            mostri.add(monsters);
+            monsters.setBounce(0.2);
+            monsters.setCollideWorldBounds(true);
+            monsters.type = "zombo";
+            monsters.setSize(170, 190);
+
+            monsters = this.physics.add.sprite(800, 450, 'zombo');
+            mostri.add(monsters);
+            monsters.setBounce(0.2);
+            monsters.setCollideWorldBounds(true);
+            monsters.type = "zombo";
+            monsters.setSize(170, 190);
+
+            monsters = this.physics.add.sprite(700, 450, 'zombo');
+            mostri.add(monsters);
+            monsters.setBounce(0.2);
+            monsters.setCollideWorldBounds(true);
+            monsters.type = "zombo";
+            monsters.setSize(170, 190);
+
+            monsters = this.physics.add.sprite(600, 450, 'zombo');
+            mostri.add(monsters);
+            monsters.setBounce(0.2);
+            monsters.setCollideWorldBounds(true);
+            monsters.type = "zombo";
+            monsters.setSize(170, 190);
+
+            monsters = this.physics.add.sprite(500, 450, 'zombo');
+            mostri.add(monsters);
+            monsters.setBounce(0.2);
+            monsters.setCollideWorldBounds(true);
+            monsters.type = "zombo";
+            monsters.setSize(170, 190);
+
+            // Ronca animazione 
+            this.anims.create({
+                key: 'right',
+                frames: this.anims.generateFrameNumbers('corre', { start: 0, end: 7 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'left',
+                frames: this.anims.generateFrameNumbers('corre', { start: 0, end: 7 }),
+                frameRate: 10,
+                repeat: -1
+            });
+            this.anims.create({
+                key: 'turn',
+                frames: this.anims.generateFrameNumbers('fermo', { start: 0, end: 1 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'muore',
+                frames: this.anims.generateFrameNumbers('muore', { start: 0, end: 10 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'attacco_1',
+                frames: this.anims.generateFrameNumbers('attacco_1', { start: 0, end: 11 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'attacco_2',
+                frames: this.anims.generateFrameNumbers('attacco_2', { start: 0, end: 9 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'danno',
+                frames: this.anims.generateFrameNumbers('danno', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'salto',
+                frames: this.anims.generateFrameNumbers('salto', { start: 0, end: 2 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            //zombo animazione tot 49
+
+            this.anims.create({
+                key: 'cammina_zombo',
+                frames: this.anims.generateFrameNumbers('zombo', { start: 38, end: 48 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'fermo_zombo',
+                frames: this.anims.generateFrameNumbers('zombo', { start: 22, end: 31 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'attacco_zombo1',
+                frames: this.anims.generateFrameNumbers('zombo', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            // zembo animazione tot 64
+
+            this.anims.create({
+                key: 'cammina_zembo',
+                frames: this.anims.generateFrameNumbers('zembo', { start: 56, end: 63 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'fermo_zembo',
+                frames: this.anims.generateFrameNumbers('zembo', { start: 33, end: 41 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'attacco_zembo1',
+                frames: this.anims.generateFrameNumbers('zembo', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: 'muore_zembo',
+                frames: this.anims.generateFrameNumbers('zembo', { start: 14, end: 16 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
+            stars = this.physics.add.group({
+                key: 'star',
+                repeat: 9,
+                setXY: { x: 15, y: 0, stepX: 200 }
+            });
+
+            stars.children.iterate(function (child) {
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            });
+            gg = this.physics.add.group();
+
+            creaGG.call(this);
+
+
+            this.startTime = new Date();
+
+            // Crea il testo del timer (inizialmente a 00:00)
+            scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
+
+            // Crea il pulsante per salvare il tempo
+            var salvaButton = this.add.text(10, 10, 'Salva Tempo', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+                .setInteractive()
+                .on('pointerdown', () => salvaTempo())
+                .on('pointerover', () => salvaButton.setStyle({ fill: '#45a049' }))
+                .on('pointerout', () => salvaButton.setStyle({ fill: '#4CAF50' }));
+
+            // Crea un campo di testo per inserire il nome del giocatore
+            this.add.text(600, 60, 'Nome:', { fontSize: '24px', fill: '#fff' });
+            this.nomeGiocatoreText = this.add.text(680, 60, '', { fontSize: '24px', fill: '#fff' });
+            this.inputNome = '';
+
+            // Cattura l'input della tastiera per inserire il nome
+            this.input.keyboard.on('keydown', (event) => {
+                if (event.key === 'Backspace' && this.inputNome.length > 0) {
+                    this.inputNome = this.inputNome.slice(0, -1); // Cancella l'ultimo carattere
+                } else if (event.key.length === 1 && this.inputNome.length < 10) {
+                    this.inputNome += event.key; // Aggiungi un carattere (limita a 10 caratteri)
+                }
+                this.nomeGiocatoreText.setText(this.inputNome); // Aggiorna il testo visualizzato
+            });
+
+
+
+
+
+
+            // Codice per i testi
+            puntiText = this.add.text(15, 160, 'punti: 0', { fontSize: '32px', fill: '#000' });
+            puntiText.setOrigin(0.001, 0);
+
+            ggText = this.add.text(15, 160, 'bonus vita: 0', { fontSize: '32px', fill: '#000' });
+
+            vitaText = this.add.text(15, 200, 'vita: 10', { fontSize: '32px', fill: '#000' });
+            vitaText.setOrigin(0.001, 0);
+
+            tocca_MostriText = this.add.text(3, 80, 'Mostri: ' + mostriUccisi, { fontSize: '32px', fill: '#000' });
+            // tocca_MostriText.setOrigin(0.001, 0);
+
+
+            // Imposta il testo del timer
+            //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+
+            // Avvia il timer
+            //scene.tempoInizio = scene.time.now;
+            scene.timerAttivo = true;
+
+
+            // livello 1
+            livelliText = this.add.text(1, 80, livelliText, { fontSize: '64px', fill: '#000' });
+
+            scene.backgraund = this.sound.add('backgraund');
+            scene.backgraund.play({ loop: true });
+            /*
+            // Crea un timer
+            this.timerEvent = this.time.addEvent({
+                delay: 3000,
+                callback: scene.onEvent,
+                callbackScope: this,
+                loop: true
+            }); */
+
+
+            /*
+            // Crea un bottone per mettere in pausa
+            scene.pauseButton = this.add.text(1000, 10, 'Pausa', { fontSize: '20px', fill: '#0f0' });
+            scene.pauseButton.setInteractive();
+            scene.pauseButton.on('pointerdown', () => {
+                scene.scene.pause();
+            });
+
+            // Crea un bottone per riprendere il gioco
+            scene.resumeButton = this.add.text(1000, 50, 'Riprendi', { fontSize: '20px', fill: '#0f0' });
+            scene.resumeButton.setInteractive();
+            scene.resumeButton.on('pointerdown', () => {
+                scene.scene.resume();
+            });
+            */
+            // Nascondi il bottone per riprendere inizialmente
+            //scene.resumeButton.setVisible(true);
+
+            // Creare physics
+            this.physics.add.collider(player, platforms);
+            this.physics.add.collider(stars, platforms);
+            //this.physics.add.collider(fine_gioco, platforms);
+            this.physics.add.collider(mostri, platforms);
+            this.physics.add.collider(gg, platforms);
+            this.physics.add.overlap(player, stars, collectStar, null, this);
+            this.physics.add.overlap(player, gg, collectGg, null, this);
+            this.physics.add.overlap(player, gg, creaGG, null, this);
+            this.physics.add.overlap(player, mostri, hitZombo, null, this);
+
+        }
+
+        function update() {
+            if (scene.timerAttivo) {
+                // Calcola il tempo trascorso
+                var elapsedTime = Math.floor((new Date() - this.startTime) / 1000);
+                var minutes = Math.floor(elapsedTime / 60);
+                var seconds = elapsedTime % 60;
+                formattedTime = Phaser.Utils.String.Pad(minutes, 2, '0', 1) + ':' + Phaser.Utils.String.Pad(seconds, 2, '0', 1);
+                this.timerText.setText(formattedTime); // Aggiorna il testo del timer
+            }
+            if (tastoh.isDown) {
+                scene.scene.start('livello1');
+            }
+            var timer = this.time.now;
+            if (gameOver) {
+                // Aggiunge un testo per il pulsante di riprova
+                playButton = this.add.text(750, 350, 'Play Again', {
+                    fontSize: '32px',
+                    fill: '#ffffff'
+                });
+                playButton.setOrigin(0.5);
+                playButton.setInteractive();
+
+
+                // Azione quando si clicca sul pulsante di riprova
+                playButton.on('pointerdown', function () {
+                    scene.scene.start('livello1'); // Torna alla scena principale
+                }, this);
+
+                playButtonMenu = this.add.text(750, 450, 'Munu', { fontSize: '32px', fill: '#ffffff' });
+                playButtonMenu.setOrigin(0.5);
+                playButtonMenu.setInteractive();
+
+
+                // Azione quando si clicca sul pulsante di riprova
+                playButtonMenu.on('pointerdown', function () {
+                    scene.scene.start('Menu'); // Torna alla scena principale
+                }, this);
+
+                plauButtonMe = this.add.text(750, 530, 'CLASSIFICAZIONE', {
+                    fontSize: '32px',
+                    fill: '#ffffff'
+                });
+
+                plauButtonMe.setOrigin(0.5);
+                plauButtonMe.setInteractive();
+
+
+                // Azione quando si clicca sul pulsante di riprova
+                plauButtonMe.on('pointerdown', function () {
+                    scene.scene.start('Classificazione'); // Torna alla scena principale
+                }, this);
+                return playButton, playButtonMenu;
+            }
+            else if (gameOver) {
+                return;
+            } else if (!toccaZombie) {
+                mostri.children.iterate(function (enemy) {
+                    if (!enemy.attacca) {
+                        if (distanza(enemy) < 549) {
+                            if (player.body.x < enemy.body.x) {
+                                enemy.setVelocityX(-150);
+                                if (enemy.type == "zombo") {
+                                    enemy.anims.play('cammina_zombo', true);
+                                } else {
+                                    enemy.anims.play('cammina_zembo', true);
+                                }
+                                enemy.flipX = true;
+                            } else {
+                                enemy.setVelocityX(150);
+                                if (enemy.type == "zombo") {
+                                    enemy.anims.play('cammina_zombo', true);
+                                } else {
+                                    enemy.anims.play('cammina_zembo', true);
+                                }
+                                enemy.flipX = false;
+                            }
+                        } else {
+                            if (!enemy.flipX) {
+                                if (enemy.type == "zombo") {
+                                    enemy.anims.play('cammina_zombo', true);
+                                } else {
+                                    enemy.anims.play('cammina_zembo', true);
+                                }
+                                enemy.setVelocityX(100);
+                                if (enemy.body.x >= 1000) {
+                                    enemy.anims.stop();
+                                    enemy.setVelocityX(0);
+                                    scene.time.delayedCall(3000, () => {
+                                        enemy.flipX = true;
+                                    });
+                                }
+                            } else {
+                                if (enemy.type == "zombo") {
+                                    enemy.anims.play('cammina_zombo', true);
+                                } else {
+                                    enemy.anims.play('cammina_zembo', true);
+                                }
+                                enemy.setVelocityX(-100);
+                                if (enemy.body.x <= 600) {
+                                    enemy.anims.stop();
+                                    enemy.setVelocityX(0);
+                                    scene.time.delayedCall(3000, () => {
+                                        enemy.flipX = false;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // livelli 1 - 10
+                //livello 1
+
+                if (punti == 0 && !level1Started) {
+                    level1Started = true;
+                    this.time.delayedCall(500, () => {
+                        livelliText.setText('Livello 1');
+                    });
+                }
+                if (punti >= 50 && !level1Finished) {
+                    level1Finished = true;
+                    completeLevel(1);
+                    foresta1.destroy();
+                }
+
+                // LIVELLO 2
+
+                if (punti == 50 && !level2Started) {
+                    level2Started = true;
+                    foresta1.destroy();
+                    newImage.destroy();
+
+                    this.timerText.setPosition(10, 10);
+
+                    // piattaforma del livello 2
+                    foresta2 = this.add.image(1100, 300, 'foresta2');
+                    foresta2.setScale(4);
+                    foresta2.setDepth(0);
+
+                    livelliText.setText('Livello 2');
+
+                    // posizione del player 
+                    player.setPosition(400, 450);
+                    player.setDepth(1);
+                    creaGG.call(this);
+                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    this.time.delayedCall(500, () => {
+                        //var tempo_inizio = timer;
+                        /*
+                        // zombo
+                        monsters = this.physics.add.sprite(900, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(800, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1000, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1100, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+                        */
+
+                    });
+                }
+                if (punti >= 100 && !level2Finished) {
+                    level2Finished = true;
+                    completeLevel(2);
+                    foresta2.destroy();
+                }
+
+                // LIVELLO 3
+
+                if (punti == 100 && !level3Started) {
+                    level3Started = true;
+                    foresta2.destroy();
+
+                    foresta3 = this.add.image(1100, 200, 'foresta3');
+                    foresta3.setScale(1.8);
+                    foresta3.setDepth(0);
+
+                    player.setPosition(400, 450);
+                    player.setDepth(1);
+                    creaGG.call(this);
+                    livelliText.setText('Livello 3');
+                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    this.time.delayedCall(500, () => {
+                        /*
+                        // zombo
+                        monsters = this.physics.add.sprite(900, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(800, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1000, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1100, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+                        */
+
+                    });
+                }
+                if (punti >= 150 && !level3Finished) {
+                    level3Finished = true;
+                    completeLevel(3);
+                    foresta3.destroy();
+                }
+
+                // livello 4
+
+                if (punti == 150 && !level4Started) {
+                    level4Started = true;
+                    foresta3.destroy();
+
+                    // piattaforma del livello 4
+                    foresta4 = this.add.image(1500, 500, 'foresta4');
+                    foresta4.setScale(2);
+                    foresta4.setDepth(0);
+
+                    // posizione del player 
+                    player.setPosition(400, 450);
+                    player.setDepth(1);
+                    creaGG.call(this);
+                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    this.time.delayedCall(500, () => {
+                        livelliText.setText('Livello 4');
+                        /*
+                        // zombo
+                        monsters = this.physics.add.sprite(900, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(800, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1000, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+
+                        monsters = this.physics.add.sprite(1100, 450, 'zombo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true);
+                        monsters.type = "zombo";
+                        monsters.setSize(170, 190);
+                        */
+
+                    });
+                }
+                if (punti >= 200 && !level4Finished) {
+                    level4Finished = true;
+                    completeLevel(4);
+                    foresta4.destroy();
+                }
+
+                // livello 5
+
+                if (punti == 200 && !level5Started) {
+                    level5Started = true;
+                    foresta4.destroy();
+
+                    // piattaforma del livello 5
+                    foresta5 = this.add.image(1100, 300, 'foresta5');
+                    foresta5.setScale(4.5);
+                    foresta5.setDepth(0);
+
+                    // posizione del player 
+                    player.setPosition(400, 450);
+                    player.setDepth(1);
+                    creaGG.call(this);
+                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    this.time.delayedCall(500, () => {
+                        livelliText.setText('Livello 5');
+
+
+                        // zembo
+                        monsters = this.physics.add.sprite(900, 200, 'zembo');
+                        mostri.add(monsters);
+                        monsters.setBounce(0.2);
+                        monsters.setCollideWorldBounds(true, "vita_boss13");
+                        monsters.type = "zembo";
+                        monsters.setScale(3);
+                        monsters.setSize(80, 155);
+                        monsters.setOffset(50, 34);
+                        vitaBoss = scene.physics.add.staticGroup();
+                        vita_zembo = 60;
+                        contatoreBarra = 13;
+                        barra = vitaBoss.create(1300, 200, `vita_boss${contatoreBarra}`);
+
+
+
+                    });
+                }
+                if (punti >= 250 && !level5Finished) {
+                    level5Finished = true;
+                    completeLevel(5);
+                    scene.timerAttivo = false;
+                    newImage.destroy();
+                    newImage1.destroy();
+                    newImage2.destroy();
+                    newImage3.destroy();
+                    congratulazione = this.add.text(200, 300, 'Congratulazione per aver giocato il tuo record: ' + scene.minuti + 'm' + ':' + scene.secondi + 's', { fontSize: '32px', fill: '#0a0dc9' });
+                    congratulazione.setDepth(1);
+                    const buttonGraphics = this.add.graphics();
+                    buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
+                    buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
+                    var playButtonDietroPL = this.add.text(750, 450, 'MENU', {
+                        font: "50px Georgia",
+                        fill: '#145e0d',
+                        out: 'button-active',
+                        over: 'button-over',
+                        down: 'button-down'
+                    });
+
+                    playButtonDietroPL.setInteractive();
+
+                    playButtonDietroPL.on('pointerover', () => {
+                        playButtonDietroPL.setBackgroundColor('#93C47D');
+                    });
+
+                    playButtonDietroPL.on('pointerout', () => {
+                        playButtonDietroPL.setBackgroundColor('#6AA84F');
+                    });
+
+                    playButtonDietroPL.on('pointerdown', () => {
+                        this.scene.start('Menu');
+                    }, this);
+
+                    var playButtonDietroPl = this.add.text(750, 530, 'CLASSIFICA', {
+                        font: "50px Georgia",
+                        fill: '#145e0d',
+                        out: 'button-active',
+                        over: 'button-over',
+                        down: 'button-down'
+                    });
+
+                    playButtonDietroPl.setInteractive();
+
+                    playButtonDietroPl.on('pointerover', () => {
+                        playButtonDietroPl.setBackgroundColor('#93C47D');
+                    });
+
+                    playButtonDietroPl.on('pointerout', () => {
+                        playButtonDietroPl.setBackgroundColor('#6AA84F');
+                    });
+
+                    playButtonDietroPl.on('pointerdown', () => {
+                        this.scene.start('Classificazione');
+                    }, this);
+                    //star.disableBody(false, false);
+                }
+
+            } if (!attacca) {
+                if (cursors.up.isDown && player.body.touching.down) {
+                    player.setVelocityY(-300);
+                    player.anims.play('salto', true);
+                }
+                if (tastoq.isDown) {
+                    player.anims.play('attacco_1', true);
+                    attacca = true;
+                    this.time.delayedCall(player.anims.currentAnim.duration, () => {
+                        attacca = false;
+                    });
+                    player.setSize(450, 300);
+                    player.setOffset(-200, -10);
+                } 
+
+                else if (attacca = false) {
+                    player.setVelocityX(0);
+                    player.anims.play('turn');
+                    player.setSize(150, 250);
+                    player.setOffset(-90, -90);
+                }
+                
+                else if (tastow.isDown) {
+                    player.anims.play('attacco_2', true);
+                    attacca = true;
+                    this.time.delayedCall(player.anims.currentAnim.duration, () => {
+                        attacca = false;
+                    });
+                    player.setSize(450, 300);
+                    player.setOffset(-200, -10);
+                } 
+                
+                else if (attacca = false) {
+                    player.setSize(150, 250);
+                    player.setOffset(-90, -90);
+
+                } else if (cursors.left.isDown) {
+                    player.setVelocityX(-320);
+                    player.flipX = true;
+                    player.setSize(200, 250);
+                    player.setOffset(-40, -90);
+                    if (player.body.touching.down) {
+                        player.anims.play('left', true);
+                    } else {
+                        //player.anims.play('salto', true);
+                    }
+                } else if (cursors.right.isDown) {
+                    player.setVelocityX(320);
+                    player.setSize(200, 250);
+                    player.setOffset(-130, -90);
+                    player.flipX = false;
+                    if (player.body.touching.down) {
+                        player.anims.play('right', true);
+                    } else {
+                        //player.anims.play('salto', true);
+                    }
+                } else if (player.body.touching.down) {
+                    player.setVelocityX(0);
+                    player.anims.play('turn');
+                    player.setSize(150, 250);
+                    player.setOffset(-90, -90);
+                } else {
+                    //player.anims.play('salto', true);
+                }
+            } else {
+                player.setVelocityX(0);
+            }
+
+
+            // posizionamento delle camere per Text
+            puntiText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 15);
+            puntiText.setDepth(1);
+            vitaText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 55);
+            vitaText.setDepth(1);
+            tocca_MostriText.setPosition(this.cameras.main.scrollX + 1300, this.cameras.main.scrollY + 15);
+            tocca_MostriText.setDepth(1);
+            ggText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 95);
+            ggText.setDepth(1);
+            livelliText.setPosition(this.cameras.main.scrollX + 600, this.cameras.main.scrollY + 80);
+            livelliText.setDepth(1);
+
+            this.timerText.setPosition(this.cameras.main.scrollX + 650, this.cameras.main.scrollY + 30);
+
+
+
+            //gameOverText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 235);
+
+        }
+
+        function salvaTempo() {
+            var nome = scene.inputNome.trim();
+            if (!nome) {
+                nome = "Anonimo";
+            }
+
+            // Aggiungi il nuovo record alla classifica
+            classifica.push({ nome: nome, tempo: formattedTime, punti: punti, mostriUccisi: mostriUccisi });
+
+            // Passa alla scena della classifica
+            scene.scene.start('Classificazione');
+        }
+
+
+        // Create a function to handle level completion
+        function completeLevel(level) {
+            foresta1.destroy();
+
+            newImage = scene.add.image(0, 0, 'foresta2');
+            newImage1 = scene.add.image(0, 0, 'foresta3');
+            newImage2 = scene.add.image(0, 0, 'foresta4');
+            newImage3 = scene.add.image(0, 0, 'foresta5');
+
+            // Reset the player position and other necessary variables
+            player.setPosition(300, 350);
+            //vita = 10;
+            //vitaText.setText('vita: ' + vita);
+            // ...
+        }
+        /* non funziona 
+        function pauseGame() {
+            scene.scene.pause();  // Pausa la scena
+
+            // Mostra il bottone per riprendere e nasconde quello per la pausa
+            //scene.resumeButton.setVisible(true);
+            //scene.pauseButton.setVisible(false);
+        }
+
+        function resumeGame() {
+            //scene.time.timeScale = 1;  // Riprende l'avanzamento del tempo
+            scene.scene.resume();  // Riavvia la scena
+            //console.log("Gioco ripreso.");
+
+            // Nasconde il bottone per riprendere e mostra quello per la pausa
+            //scene.resumeButton.setVisible(false);
+            //scene.pauseButton.setVisible(true);
+        }
+        
+        function onEvent() {
+            console.log("Evento del timer attivato!");
+        }
+            */
+
+        function collectStar(player, star) {
+            star.disableBody(true, true);
+            punti += 5;
+            puntiText.setText('punti: ' + punti);
+
+            if (stars.countActive(true) === 0 && !level5Finished) {
+                stars.children.iterate(function (child) {
+                    child.enableBody(true, child.x, 0, true, true);
+                    child.setDepth(1);
+                });
+
+            }
+        }
+
+        function collectGg(player, oggetto) {
+            oggetto.disableBody(true, true);
+            gg_punti += 1;
+            ggText.setText('Bounus vita: ' + gg_punti);
+
+            vita++;
+            vitaText.setText('vita: ' + vita);
+        }
+        function creaGG() {
+            gg.create(1000, 200, 'gg');
+
+            gg.children.iterate((child) => {
+                child.setScale(0.8, 0.8);
+            });
+        }
+
+        function distanza(monsters) {
+            return Math.sqrt((player.body.x - monsters.body.x) ** 2 + (player.body.y - monsters.body.y) ** 2);
+        }
+
+        function hitZombo(player, zombo) {
+            if (attacca) {
+
+                if (zombo.type == "zembo" && vita_zembo >= 1 && !toccaZombie) {
+                    vita_zembo -= 5;
+                    if (zombo.flipX) {
+                        zombo.setVelocityX(400);
+                    } else {
+                        zombo.setVelocityX(-400);
+                    }
+                    contatoreBarra--;
+                    barra.destroy();
+                    barra = vitaBoss.create(1300, 200, `vita_boss${contatoreBarra}`);
+
+                } else if (!toccaZombie) {
+                    zombo.destroy();
+
+                    mostriUccisi++;
+                    tocca_MostriText.setText('Mostri: ' + mostriUccisi);
+                }
+                toccaZombie = true;
+                player.setVelocityX(0);
+                this.time.delayedCall(500, () => {
+                    toccaZombie = false;
+                });
+
+            }
+            else if (vita > 1) {
+
+                if (zombo.type == "zombo") {
+                    zombo.anims.play('attacco_zombo1');
+                    vita -= 1;
+                } else if (zombo.type == "zembo") {
+                    zombo.anims.play('attacco_zembo1');
+                    vita -= 2;
+                }
+                zombo.attacca = true;
+                this.time.delayedCall(zombo.anims.currentAnim.duration, () => {
+                    zombo.attacca = false;
+                });
+
+
+                vitaText.setText('vita: ' + vita);
+                if (player.body.touching.right) {
+                    toccaZombie = true;
+                    player.setVelocityX(-100);
+                    this.time.delayedCall(500, () => {
+                        toccaZombie = false;
+                    });
+                } else {
+                    toccaZombie = true;
+                    player.setVelocityX(100);
+                    this.time.delayedCall(500, () => {
+                        toccaZombie = false;
+                    });
+                }
+            } else {
+                this.physics.pause();
+                player.anims.play('muore');
+                gameOverText = this.add.text(555, 200, 'GAME OVER!', { fontSize: '64px', fill: '#000' });
+                gameOver = true;
+
+                this.time.delayedCall(500, () => {
+                    player.disableBody(true, true);
+                });
+                scene.timerAttivo = false;
+                congratulazione = this.add.text(200, 300, 'Congratulazione per aver giocato il tuo record: ' + formattedTime, { fontSize: '32px', fill: '#0a0dc9' });
+                congratulazione.setDepth(1);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
