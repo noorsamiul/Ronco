@@ -744,7 +744,7 @@
             this.startTime = new Date();
 
             // Crea il testo del timer (inizialmente a 00:00)
-            scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
+            scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
 
             // Crea il pulsante per salvare il tempo
             var salvaButton = this.add.text(10, 10, 'Salva Tempo', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
@@ -784,10 +784,6 @@
 
             tocca_MostriText = this.add.text(3, 80, 'Mostri: ' + mostriUccisi, { fontSize: '32px', fill: '#000' });
             // tocca_MostriText.setOrigin(0.001, 0);
-
-
-            // Imposta il testo del timer
-            //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
 
             // Avvia il timer
             //scene.tempoInizio = scene.time.now;
@@ -985,7 +981,7 @@
                     player.setPosition(400, 450);
                     player.setDepth(1);
                     creaGG.call(this);
-                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
                         //var tempo_inizio = timer;
                         /*
@@ -1041,7 +1037,7 @@
                     player.setDepth(1);
                     creaGG.call(this);
                     livelliText.setText('Livello 3');
-                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
                         /*
                         // zombo
@@ -1097,7 +1093,7 @@
                     player.setPosition(400, 450);
                     player.setDepth(1);
                     creaGG.call(this);
-                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
                         livelliText.setText('Livello 4');
                         /*
@@ -1154,7 +1150,7 @@
                     player.setPosition(400, 450);
                     player.setDepth(1);
                     creaGG.call(this);
-                    //scene.timerText = scene.add.text(10, 10, 'Tempo: 0:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 });
+                    scene.timerText = this.add.text(400, 50, '00:00', { fontSize: '32px', fill: '#000', stroke: '#000', strokeThickness: 2 }).setOrigin(0.5);
                     this.time.delayedCall(500, () => {
                         livelliText.setText('Livello 5');
 
@@ -1185,7 +1181,7 @@
                     newImage1.destroy();
                     newImage2.destroy();
                     newImage3.destroy();
-                    congratulazione = this.add.text(200, 300, 'Congratulazione per aver giocato il tuo record: ' + scene.minuti + 'm' + ':' + scene.secondi + 's', { fontSize: '32px', fill: '#0a0dc9' });
+                    congratulazione = this.add.text(200, 300, 'Congratulazione per aver giocato il tuo record: ' + formattedTime, { fontSize: '32px', fill: '#0a0dc9' });
                     congratulazione.setDepth(1);
                     const buttonGraphics = this.add.graphics();
                     buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
@@ -1212,28 +1208,11 @@
                         this.scene.start('Menu');
                     }, this);
 
-                    var playButtonDietroPl = this.add.text(750, 530, 'CLASSIFICA', {
-                        font: "50px Georgia",
-                        fill: '#145e0d',
-                        out: 'button-active',
-                        over: 'button-over',
-                        down: 'button-down'
-                    });
-
-                    playButtonDietroPl.setInteractive();
-
-                    playButtonDietroPl.on('pointerover', () => {
-                        playButtonDietroPl.setBackgroundColor('#93C47D');
-                    });
-
-                    playButtonDietroPl.on('pointerout', () => {
-                        playButtonDietroPl.setBackgroundColor('#6AA84F');
-                    });
-
-                    playButtonDietroPl.on('pointerdown', () => {
-                        this.scene.start('Classificazione');
-                    }, this);
-                    //star.disableBody(false, false);
+                    salvaButton = this.add.text(750, 530, 'CLASSIFICo', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+                        .setInteractive()
+                        .on('pointerdown', () => salvaTempo())
+                        .on('pointerover', () => salvaButton.setStyle({ fill: '#93C47D' }))
+                        .on('pointerout', () => salvaButton.setStyle({ fill: '#6AA84F' }));
                 }
 
             } if (!attacca) {
@@ -1249,7 +1228,7 @@
                     });
                     player.setSize(450, 300);
                     player.setOffset(-200, -10);
-                } 
+                }
 
                 else if (attacca = false) {
                     player.setVelocityX(0);
@@ -1257,7 +1236,7 @@
                     player.setSize(150, 250);
                     player.setOffset(-90, -90);
                 }
-                
+
                 else if (tastow.isDown) {
                     player.anims.play('attacco_2', true);
                     attacca = true;
@@ -1266,8 +1245,8 @@
                     });
                     player.setSize(450, 300);
                     player.setOffset(-200, -10);
-                } 
-                
+                }
+
                 else if (attacca = false) {
                     player.setSize(150, 250);
                     player.setOffset(-90, -90);
@@ -1298,7 +1277,9 @@
                     player.setSize(150, 250);
                     player.setOffset(-90, -90);
                 } else {
-                    //player.anims.play('salto', true);
+                    player.anims.play('turn', true);
+                    player.setSize(150, 250);
+                    player.setOffset(-90, -90);
                 }
             } else {
                 player.setVelocityX(0);
@@ -1318,8 +1299,6 @@
             livelliText.setDepth(1);
 
             this.timerText.setPosition(this.cameras.main.scrollX + 650, this.cameras.main.scrollY + 30);
-
-
 
             //gameOverText.setPosition(this.cameras.main.scrollX + 15, this.cameras.main.scrollY + 235);
 
@@ -1350,9 +1329,6 @@
 
             // Reset the player position and other necessary variables
             player.setPosition(300, 350);
-            //vita = 10;
-            //vitaText.setText('vita: ' + vita);
-            // ...
         }
         /* non funziona 
         function pauseGame() {
