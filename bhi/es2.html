@@ -9,9 +9,7 @@
         body {
             margin: 0;
             padding: 0;
-
         }
-
         canvas {
             display: block;
         }
@@ -64,13 +62,13 @@
         var player;
         var platforms;
         var fine_gioco;
+
         // foresta per i livelli
         var foresta1;
         var foresta2;
         var foresta3;
         var foresta4;
         var foresta5;
-        var tacche;
         var cursors;
         var punti = 0;
         var vita = 10;
@@ -110,8 +108,6 @@
 
         var congratulazione = false;
 
-        //var finegioco = true;
-
         //primo livello zombo * 5
         var mostri;
         var monsters;
@@ -132,8 +128,6 @@
         var playButton;
         var attacca = false;
 
-        //var timerText;
-        //var tempoInizio = 0;
         var timerAttivo = false;
 
         var vitaBoss;
@@ -141,16 +135,11 @@
         var barra;
         var plauButtonMe;
 
+        // audio gioco
         var backgraund;
 
-        //var timerEvent;
         //var pauseButton = false;
         //var resumeButton = false;
-
-        //var inputText = '';
-        //var nameText;
-        //var startButton;
-
 
         // menu variabili
         var menu;
@@ -182,20 +171,9 @@
             ronco_player.setScale(3);
             ronco_player.setDepth(1);
 
-            const buttonGraphics = this.add.graphics();
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
             var playButton = this.add.text(730, 379, 'PLAY', {
                 font: "60px Georgia",
-                fill: '#145e0d',
-            });
-
-            playButton.on('pointerover', () => {
-                playButton.setBackgroundColor('#93C47D');
-            });
-
-            playButton.on('pointerout', () => {
-                playButton.setBackgroundColor('#6AA84F');
+                fill: '#389c0b',
             });
 
             playButton.setInteractive();
@@ -204,43 +182,21 @@
                 this.scene.start('inizio');
             }, this);
 
-
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
             var playButtonOpzioni = this.add.text(695, 465, 'OPZIONI', {
                 font: "50px Georgia",
-                fill: '#145e0d'
+                fill: '#389c0b'
             });
             playButtonOpzioni.setInteractive();
-
-            playButtonOpzioni.on('pointerover', () => {
-                playButtonOpzioni.setBackgroundColor('#93C47D');
-            });
-
-            playButtonOpzioni.on('pointerout', () => {
-                playButtonOpzioni.setBackgroundColor('#6AA84F');
-            });
-
 
             playButtonOpzioni.on('pointerdown', () => {
                 this.scene.start('MenuOpzioni');
             }, this);
 
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
             var playButtonClassisicazione = this.add.text(580, 547, 'CLASSIFICAZIONE', {
                 font: "50px Georgia",
-                fill: '#145e0d'
+                fill: '#389c0b'
             });
             playButtonClassisicazione.setInteractive();
-
-            playButtonClassisicazione.on('pointerover', () => {
-                playButtonClassisicazione.setBackgroundColor('#93C47D');
-            });
-
-            playButtonClassisicazione.on('pointerout', () => {
-                playButtonClassisicazione.setBackgroundColor('#6AA84F');
-            });
 
             playButtonClassisicazione.on('pointerdown', () => {
                 this.scene.start('Classificazione');
@@ -264,27 +220,17 @@
             menu = this.add.image(800, 380, 'menu');
             menu.setScale(3);
 
-            const buttonGraphics = this.add.graphics();
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
             var playButtonDietro = this.add.text(1205, 650, 'MENU', {
                 font: "50px Georgia",
-                fill: '#145e0d'
+                fill: '#389c0b'
             });
 
             playButtonDietro.setInteractive();
 
-            playButtonDietro.on('pointerover', () => {
-                playButtonDietro.setBackgroundColor('#93C47D');
-            });
-
-            playButtonDietro.on('pointerout', () => {
-                playButtonDietro.setBackgroundColor('#6AA84F');
-            });
-
             playButtonDietro.on('pointerdown', () => {
                 this.scene.start('Menu');
             }, this);
+
         }
 
         function updateMenuOpzioni() {
@@ -303,15 +249,9 @@
             menu = this.add.image(800, 380, 'menu');
             menu.setScale(3);
 
-            const buttonGraphics = this.add.graphics();
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
             var playButtonDietroClass = this.add.text(1205, 650, 'MENU', {
                 font: "50px Georgia",
-                fill: '#3cdbde',
-                out: 'button-active',
-                over: 'button-over',
-                down: 'button-down'
+                fill: '#389c0b'
             });
 
             playButtonDietroClass.setInteractive();
@@ -372,14 +312,9 @@
             menu.setScale(3);
 
             // bottone per speed run
-            const buttonGraphics = this.add.graphics();
-            buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-            buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
-            buttonGraphics.strokeRoundedRect(220, 200 - 10, 450, 70, 20);
-            buttonGraphics.fillRoundedRect(220, 200 - 10, 450, 70, 20);
             var playButtonSpeedrun = this.add.text(500, 200, 'PLAY SPEED RUN', {
                 font: "50px Georgia",
-                fill: '#145e0d'
+                fill: '#389c0b'
             });
 
             playButtonSpeedrun.setInteractive();
@@ -393,7 +328,7 @@
 
             var playButtonMU = this.add.text(715, 500, 'MENU', {
                 font: "50px Georgia",
-                fill: '#145e0d'
+                fill: '#389c0b'
             });
 
             playButtonMU.setInteractive();
@@ -1183,38 +1118,25 @@
                     newImage3.destroy();
                     congratulazione = this.add.text(200, 300, 'Congratulazione per aver giocato il tuo record: ' + formattedTime, { fontSize: '32px', fill: '#0a0dc9' });
                     congratulazione.setDepth(1);
-                    const buttonGraphics = this.add.graphics();
-                    buttonGraphics.lineStyle(4, 0x000000); // Colore e spessore del bordo
-                    buttonGraphics.fillStyle(0x90EE90, 1); // Colore di riempimento (verde chiaro)
                     var playButtonDietroPL = this.add.text(750, 450, 'MENU', {
                         font: "50px Georgia",
-                        fill: '#145e0d',
-                        out: 'button-active',
-                        over: 'button-over',
-                        down: 'button-down'
+                        fill: '#389c0b'
                     });
 
                     playButtonDietroPL.setInteractive();
-
-                    playButtonDietroPL.on('pointerover', () => {
-                        playButtonDietroPL.setBackgroundColor('#93C47D');
-                    });
-
-                    playButtonDietroPL.on('pointerout', () => {
-                        playButtonDietroPL.setBackgroundColor('#6AA84F');
-                    });
 
                     playButtonDietroPL.on('pointerdown', () => {
                         this.scene.start('Menu');
                     }, this);
 
-                    salvaButton = this.add.text(750, 530, 'CLASSIFICo', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
+                    salvaButton = this.add.text(750, 530, 'SALVA NELLA CLASSIFICA', { fontSize: '24px', fill: '#4CAF50', backgroundColor: '#fff' })
                         .setInteractive()
                         .on('pointerdown', () => salvaTempo())
                         .on('pointerover', () => salvaButton.setStyle({ fill: '#93C47D' }))
                         .on('pointerout', () => salvaButton.setStyle({ fill: '#6AA84F' }));
                 }
 
+                //attacco pulsanti 
             } if (!attacca) {
                 if (cursors.up.isDown && player.body.touching.down) {
                     player.setVelocityY(-300);
@@ -1352,7 +1274,7 @@
         function onEvent() {
             console.log("Evento del timer attivato!");
         }
-            */
+        */
 
         function collectStar(player, star) {
             star.disableBody(true, true);
